@@ -1,5 +1,6 @@
 package com.idiotleon.tutorialroom.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -15,5 +16,5 @@ interface WordDAO {
     fun deleteAll()
 
     @Query("SELECT * from word_table ORDER BY word ASC")
-    fun getAlphabetizedWords(): List<Word>
+    fun getAlphabetizedWords(): LiveData<List<Word>>
 }
