@@ -7,14 +7,10 @@ import com.idiotleon.tutorialroom.db.WordRoomDatabase
 import com.idiotleon.tutorialroom.model.Word
 
 class WordRepository constructor(
-    private val wordDAO: WordDAO,
-    private val allWords: LiveData<List<Word>>
+    application: Application,
+    private val wordDAO: WordDAO = WordRoomDatabase.getDatabase(application).wordDAO(),
+    private val allWords: LiveData<List<Word>> = wordDAO.getAlphabetizedWords()
 ) {
-    constructor(application: Application) : this(
-        WordRoomDatabase.getDatabase(application).wordDAO(),
-        WordRoomDatabase.getDatabase(application).wordDAO().getAlphabetizedWords()
-    )
-
     fun getAllWords(): LiveData<List<Word>> = allWords
 
     fun insert(word: Word) = WordRoomDatabase.databseWriteExecutor.execute { wordDAO.insert(word) }
