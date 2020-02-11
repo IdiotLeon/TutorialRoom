@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.idiotleon.tutorialroom.dao.WordDAO
 import com.idiotleon.tutorialroom.model.Word
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @Database(entities = [Word::class], version = 1, exportSchema = false)
 abstract class WordRoomDatabase : RoomDatabase() {
+    abstract fun wordDAO(): WordDAO
 
     companion object {
         @Volatile
