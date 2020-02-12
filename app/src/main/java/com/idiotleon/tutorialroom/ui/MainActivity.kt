@@ -1,11 +1,11 @@
-package com.idiotleon.tutorialroom
+package com.idiotleon.tutorialroom.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.idiotleon.tutorialroom.R
 import com.idiotleon.tutorialroom.adapter.WordListAdapter
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
