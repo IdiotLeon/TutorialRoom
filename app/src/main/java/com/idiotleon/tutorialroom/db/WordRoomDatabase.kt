@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.idiotleon.tutorialroom.dao.WordDAO
 import com.idiotleon.tutorialroom.model.Word
 import java.util.concurrent.ExecutorService
@@ -29,12 +30,29 @@ abstract class WordRoomDatabase : RoomDatabase() {
                                 it::class.java,
                                 "word_database"
                             )
+                                .addCallback(roomDatabaseCallback)
                                 .build()
                     }
                 }
             }
 
             return INSTANCE as WordRoomDatabase
+        }
+
+        private val roomDatabaseCallback: Callback = object : RoomDatabase.Callback() {
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+
+                databseWriteExecutor.execute {
+                    val dao: WordDAO? = INSTANCE?.wordDAO()
+                    dao?.deleteAll()
+
+                    var word: Word = Word("Hello")
+                    dao?.insert(word)
+                    word = Word("World")
+                    dao?.insert(word)
+                }
+            }
         }
     }
 }
