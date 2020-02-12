@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 import com.idiotleon.tutorialroom.model.Word
 import com.idiotleon.tutorialroom.repository.WordRepository
 
-class WordViewModel constructor(
-    application: Application,
-    private val repository: WordRepository = WordRepository(application),
-    private val allWords: LiveData<List<Word>> = repository.getAllWords()
+class WordViewModel(
+    application: Application
 ) : AndroidViewModel(application) {
 
-    fun getAllWords(): LiveData<List<Word>> = allWords
+    private val repository: WordRepository = WordRepository(application)
+    private val allWords: LiveData<List<Word>> = repository.getAllWords()
 
+    fun getAllWords(): LiveData<List<Word>> = allWords
     fun insert(word: Word) = repository.insert(word)
 }

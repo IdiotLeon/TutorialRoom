@@ -13,5 +13,5 @@ class WordRepository constructor(
 ) {
     fun getAllWords(): LiveData<List<Word>> = allWords
 
-    fun insert(word: Word) = WordRoomDatabase.databseWriteExecutor.execute { wordDAO.insert(word) }
+    fun insert(word: Word) = WordRoomDatabase.databaseWriteExecutor.execute { wordDAO.insert(word) }
 }

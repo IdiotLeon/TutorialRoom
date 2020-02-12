@@ -18,23 +18,22 @@ abstract class WordRoomDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: WordRoomDatabase? = null
         private const val NUMBER_OF_THREADS: Int = 4
-        val databseWriteExecutor: ExecutorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
+        val databaseWriteExecutor: ExecutorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS)
 
         fun getDatabase(context: Context): WordRoomDatabase {
-            INSTANCE?.let {
-                synchronized(it::class.java) {
-                    INSTANCE?.let {
+            if (INSTANCE == null)
+                synchronized(WordRoomDatabase::class.java) {
+                    if (INSTANCE == null) {
                         INSTANCE =
                             Room.databaseBuilder(
                                 context.applicationContext,
-                                it::class.java,
+                                WordRoomDatabase::class.java,
                                 "word_database"
                             )
                                 .addCallback(roomDatabaseCallback)
                                 .build()
                     }
                 }
-            }
 
             return INSTANCE as WordRoomDatabase
         }
@@ -43,7 +42,7 @@ abstract class WordRoomDatabase : RoomDatabase() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
 
-                databseWriteExecutor.execute {
+                databaseWriteExecutor.execute {
                     val dao: WordDAO? = INSTANCE?.wordDAO()
                     dao?.deleteAll()
 
